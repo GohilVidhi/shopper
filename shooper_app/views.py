@@ -1056,3 +1056,9 @@ def invoice(request):
         "datetime":datetime,
         "total_price":total_price,}
     return render(request, 'invoice.html',contaxt)
+
+
+
+
+
+print("VIDHIIIIII")
