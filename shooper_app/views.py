@@ -1060,5 +1060,3 @@ def invoice(request):
 
 
 
-
-print("VIDHIIIIII")
