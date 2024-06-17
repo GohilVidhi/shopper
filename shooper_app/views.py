@@ -475,7 +475,7 @@ def add_to_cart(request, id):
         uid = User.objects.get(email=request.session['email'])
         pid = product.objects.get(id=id)
         pcid = Add_to_cart.objects.filter(product_id=pid, user_id=uid).first()
-
+                      
         if pcid:
             pcid.quantity = pcid.quantity + 1
             pcid.total_price = pcid.quantity * pcid.price
@@ -494,79 +494,8 @@ def add_to_cart(request, id):
     else:
         return redirect("cart")
 
-# def cart(request):
-#     if 'email' in request.session:
-#         uid = User.objects.get(email=request.session['email'])
-#         cid = Add_to_cart.objects.filter(user_id=uid)
-#         prod = Add_to_cart.objects.filter(user_id=uid)
-#         count = Add_to_cart.objects.filter(user_id=uid).count()
-#         countt = Add_to_whishlist.objects.filter(user_id=uid).count()
-#         pid = product.objects.all().order_by("-id")
+"""================================================"""
 
-#         list = []
-#         total = 0
-#         sub_total = 0
-#         charge = 50
-#         discount=0
-#         if "discount" in request.session:
-#             dis=request.session.get("discount")
-#             total=sub_total+charge-dis
-#             print(dis)
-#         else:
-#             dis=0
-#             total=sub_total+charge
-#         for i in prod:
-#             a = i.quantity * i.price
-#             list.append(a)
-#             sub_total = sum(list)
-#         total = sub_total + charge
-
-#         con = {"user_id": uid, "product_id": pid, "cid": cid, "total": total, "sub_total": sub_total, "charge": charge,
-#                "count": count, "countt": countt,"discount":discount}
-#         return render(request, "cart.html", con)
-#     else:
-#         return render(request, "cart.html")
-
-
-#----------------------------------------
-# def cart(request):
-#     if 'email' in request.session:
-#         uid = User.objects.get(email=request.session['email'])
-#         cid = Add_to_cart.objects.filter(user_id=uid)
-#         prod = Add_to_cart.objects.filter(user_id=uid)
-#         count = Add_to_cart.objects.filter(user_id=uid).count()
-#         countt = Add_to_whishlist.objects.filter(user_id=uid).count()
-#         pid = product.objects.all().order_by("-id")
-                        
-#         if count == 0:
-#             del request.session["discount"] 
-#         list = []
-#         total = 0
-#         sub_total = 0
-#         charge = 50
-#         discount = 0
-#         total = sub_total + charge
-#         for i in prod:
-#             a = i.quantity * i.price
-#             list.append(a)
-#             sub_total = sum(list)
-        
-#         if "discount" in request.session:
-#             discount = request.session.get('discount', 0)
-
-#             total=sub_total+charge-discount 
-                
-#             print(discount,total)
-                    
-#         else:
-#             discount=0
-#             total=sub_total+charge
-
-#         con = {"user_id": uid, "product_id": pid, "cid": cid, "total": total, "sub_total": sub_total, "charge": charge,"count":count, "countt": countt,"discount":discount}
-#         return render(request, "cart.html", con)
-#     else:   
-#         return render(request, "cart.html")
-    
      
 def cart(request):
     if "email" in request.session:
