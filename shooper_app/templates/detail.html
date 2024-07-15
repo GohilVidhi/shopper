@@ -49,13 +49,45 @@
             <div class="col-lg-7 pb-5">
                 <h3 class="font-weight-semi-bold">{{pid.name}}</h3>
                 <div class="d-flex mb-3">
-                    <div class="text-primary mr-2">
+                   <!-- <div class="text-primary mr-2">
+                        {% for i in "12345" %}
+                        {% if forloop.counter <= a %}
                         <small class="fas fa-star"></small>
-                        <small class="fas fa-star"></small>
+                        {% elif forloop.counter == a1 %}
+                        <small class="fas fa-star-half-alt"></small>
+                        {% else %}
+                        <small class="far fa-star"></small>
+                        {% endif %}
+                        {% endfor %}
+                         <small class="fas fa-star"></small>
                         <small class="fas fa-star"></small>
                         <small class="fas fa-star-half-alt"></small>
+                        <small class="far fa-star"></small> 
+                    </div>-->
+
+
+
+
+                    <div class="text-primary mr-2">
+                        {% for i in "12345" %}
+                        {% if forloop.counter <= a %}
+                        <small class="fas fa-star"></small>
+                        {% elif forloop.counter == a1 %}
+                        <small class="fas fa-star-half-alt"></small>
+                        {% else %}
+                        <!-- <small class="fas fa-star"></small>
+                        <small class="fas fa-star-half-alt"></small>
+                        <small class="far fa-star"></small> -->
                         <small class="far fa-star"></small>
+                        {% endif %}
+                        {% endfor %}
                     </div>
+
+
+
+
+
+
                     <small class="pt-1">(50 Reviews)</small>
                 </div>
                 <h3 class="font-weight-semi-bold mb-4"> &#8377; {{pid.price}}{{pid.size1}}</h3>
@@ -119,7 +151,7 @@
                 <form action="{% url 'single_add_to_cart' pid.id %}" method="post">
                     {% csrf_token %} 
                 <div class="d-flex align-items-center mb-4 pt-2">
-                   
+                    
                     <div class="input-group quantity mr-3" style="width: 130px;">
                         <div class="input-group-prepend">
                             <button class="btn btn-primary btn-minus" type="button">

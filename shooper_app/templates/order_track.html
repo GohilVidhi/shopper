@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ORDER TRACKING</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        width: 700px;
+      }
+
+      .container33 {
+        display: flex;
+        justify-content: center;
+      }
+
+      .details {
+        width: 50%;
+        margin: 20px;
+      }
+
+      .image img {
+        object-fit: cover;
+        height: 150px;
+        width: 150px;
+        margin-top: 25px;
+      }
+
+      .details h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+
+      .details p {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      button {
+        background-color: green;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: green;
+      }
+
+      .main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: pop;
+        flex-direction: column;
+        margin-top: 45px;
+      }
+
+      .head {
+        text-align: center;
+      }
+
+      .head_1 {
+        font-size: 30px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .head_1 span {
+        color: black;
+      }
+
+      .head_2 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        margin-top: 3px;
+      }
+
+      ul {
+        display: flex;
+        flex-direction: column;
+        margin-top: 40px;
+        align-items: flex-start;
+        position: relative;
+      }
+
+      ul li {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        margin-bottom: 40px;
+        position: relative;
+      }
+
+      ul li .icon {
+        font-size: 35px;
+        color: #ff4732;
+        margin-right: 20px;
+      }
+
+      ul li .text {
+        font-size: 20px;
+        font-weight: 600;
+        color: black;
+        margin-left: 20px;
+      }
+
+      ul li .progress {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: green;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        position: relative;
+        cursor: pointer;
+      }
+
+      ul li .progress::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) translateY(-50%);
+        width: 5px;
+        height: 70px;
+        background-color: green;
+        display: none;
+      }
+
+      ul li .progress.active::before {
+        display: block;
+      }
+
+      ul li .progress.active {
+        background-color: green;
+      }
+
+      ul li .progress .uil {
+        display: none;
+      }
+
+      ul li .progress p {
+        font-size: 13px;
+      }
+
+      ul li .progress.active .uil {
+        display: flex;
+      }
+
+      ul li:first-child .progress::before {
+        display: none;
+      }
+
+      @media (max-width: 600px) {
+        .head .head_1 {
+          font-size: 24px;
+        }
+
+        .head .head_2 {
+          font-size: 16px;
+        }
+
+        ul li .text {
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container33">
+      <div class="container">
+        {% for i in otid %}
+        <div class="image">
+          <img src="{{ i.image.url }}" alt="{{ i.name }}" />
+        </div>
+        <div class="details">
+          <h2>{{i.name}}</h2>
+          <p>Size: L</p>
+          <p>All issue easy returns</p>
+          <p>{{i.price}}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <hr />
+
+    {% for i in otid %}
+    <div class="main">
+      <h1>Order Tracking</h1>
+      <ul>
+        {% for j, n in chh %}
+        <li>
+            <i class="icon uil uil-capture"></i>
+            <div class="progress one{% if i.order_track.0 >= j.0 %} active{% endif %}">
+                <i class="uil uil-check"></i>
+            </div>
+            <p class="text">{{ n }}</p>
+        </li>
+    {% endfor %}
+    
+            <!-- <li>
+                <i class="icon uil uil-clipboard-notes"></i>
+                <div class="progress two{% if i.order_track == 'Shipped' or i.order_track == 'Reaches at Ahmedabad' or i.order_track == 'Delivered' %} active{% endif %}">
+                    <i class="uil uil-check"></i>
+                </div>
+                <p class="text">Shipped</p>
+            </li>
+            <li>
+                <i class="icon uil uil-credit-card"></i>
+                <div class="progress three{% if i.order_track == 'Reaches at Ahmedabad' or i.order_track == 'Delivered' %} active{% endif %}">
+                    <i class="uil uil-check"></i>
+                </div>
+                <p class="text">Reaches at Ahmedabad</p>
+            </li>
+            <li>
+                <i class="icon uil uil-exchange"></i>
+                <div class="progress four{% if i.order_track == 'Delivered' %} active{% endif %}">
+                    <i class="uil uil-check"></i>
+                </div>
+                <p class="text">Delivered</p>
+            </li> -->
+        
+        <!--    <li>
+                <div class="progress {% if i ==  'Order Placed' or i ==  'Shipped' or i ==  'Reaches at Ahmedabad' or i ==  j.order_track %} active {% endif %}">
+                <i class="uil uil-check"></i>
+                </div>
+            <p class="text">{{i}}</p>
+            </li> -->
+      </ul>
+    </div>
+    {% endfor %}
+
+    <script>
+      const steps = document.querySelectorAll(".progress");
+
+      steps.forEach((step, index) => {
+        step.onclick = function () {
+          steps.forEach((s, i) => {
+            if (i <= index) {
+              s.classList.add("active");
+              s.nextElementSibling.style.color = "green";
+            } else {
+              s.classList.remove("active");
+              s.nextElementSibling.style.color = "black";
+            }
+          });
+        };
+      });
+    </script>
+  </body>
+</html>

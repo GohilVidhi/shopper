@@ -3,6 +3,26 @@ from django.db import models
 # Create your models here.
 
 
+import os
+def delete_file_in_folder(file_name):
+    folder_path="C:\\Users\\Standard-9\\Desktop\\shopper_env\\shopper_project\\media\\img\\"
+   
+    file_nae=file_name.name
+    xyz=folder_path + file_nae
+    print(xyz)
+    if os.path.isfile(xyz):  # Check if the file exists
+        os.remove(xyz)
+        print("File deleted successfully.")
+    else:
+        print("File not found.")
+    
+    
+
+class Demo(models.Model):
+    image=models.ImageField(upload_to="img",validators=[delete_file_in_folder])  
+
+
+
 class Contact(models.Model):
     name=models.CharField(max_length=50)
     email=models.EmailField(max_length=50)
@@ -47,7 +67,7 @@ class color(models.Model):
 class Main_category(models.Model):
     name=models.CharField(max_length=50)
     
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
     
     
@@ -97,7 +117,7 @@ class Add_to_cart(models.Model):
         return self.name
     
     
-ch=(("India","India"),("Pakistan","Pakistan"),("Ameriaca","America"),("Afghanistan","Afghanistan"),("London","London"),("Canada","Canada")) 
+ch=(("India","India"),("Pakistan","Pakistan"),("America","America"),("Afghanistan","Afghanistan"),("London","London"),("Canada","Canada")) 
 class Address(models.Model):
     user_id=models.ForeignKey(User,on_delete=models.CASCADE,blank=True, null=True)
     first_name=models.CharField(max_length=50)
@@ -116,7 +136,8 @@ class Address(models.Model):
 
 
         
-    
+chh=(("1Order Placed","Order Placed"),("2Shipped","Shipped"),("3Reaches at Ahmedabad","Reaches at Ahmedabad"),("4Delivered","Delivered"))    
+
 class Order(models.Model):
     user_id=models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
     order_id=models.CharField(max_length=30,blank=True,null=True)
@@ -127,6 +148,7 @@ class Order(models.Model):
     total=models.IntegerField()
     total_price=models.IntegerField()
     datetime=models.DateTimeField(auto_now=True,blank=True,null=True)
+    order_track=models.CharField(choices=chh,default="Order Placed",max_length=50,blank=True,null=True)
     def __str__(self):
         return self.name
     
@@ -169,3 +191,86 @@ class coupon_code(models.Model):
     
     def __str__(self):
         return self.code
+    
+    
+
+
+
+    
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

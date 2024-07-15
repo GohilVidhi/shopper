@@ -50,10 +50,15 @@ urlpatterns = [
     path('create_rating', views.create_rating, name='create_rating'),
     path('single_add_to_cart/<int:id>', views.single_add_to_cart, name='single_add_to_cart'),
     path('user_profile/<int:id>', views.user_profile, name='user_profile'),
-    path('edit_profile  ', views.edit_profile, name='edit_profile'),
+    path('edit_profile/<int:id>/', views.edit_profile, name='edit_profile'),
     path('show_profile', views.show_profile, name='show_profile'),
     path('apply_coupon', views.apply_coupon, name='apply_coupon'),
     path('invoice', views.invoice, name='invoice'),
+    path('pagi', views.pagi, name='pagi'),
+    path('order_track', views.order_track, name='order_track'),
+   
+    
+    
     
     
 ]

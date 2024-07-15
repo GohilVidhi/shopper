@@ -99,6 +99,7 @@
     .rate>label:hover~input:checked~label {
         color: rgb(167, 9, 9);
     }
+    
 
 </style>
 
@@ -171,6 +172,12 @@
                 </a>
                 <a href="{% url 'invoice' %}" class="btn border">
                 <i class="fas fa-file-invoice text-primary" ></i>
+            </a>
+            <a href="{% url 'order' %}" class="btn border">
+                <i class="fa-solid fa-store text-primary"></i>
+            </a>
+            <a href="{% url 'order_track' %}" class="btn border">
+                <i class="fa-solid fa-truck-fast text-primary"></i>
             </a>
             </div>
         </div>

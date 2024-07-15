@@ -275,13 +275,41 @@ def shop(request):
         pid=product.objects.all().order_by("-id")
     
 
-    paginator=Paginator(pid,15) 
-    page_number=request.GET.get("page") 
+    paginator=Paginator(pid,1) 
+    page_number=request.GET.get("page",1) 
+    if page_number == "...":
+        print("okokokokk")
     pid=paginator.get_page(page_number)
+    # show_page = paginator.get_elided_page_range(page_number, on_each_side=1, on_ends=2)
+    show_page=paginator.get_elided_page_range(page_number,on_each_side=1,on_ends=2)
     
-    
-    context={'mc':mc,'sc':sc,'mc2':mc2,'pid':pid,"uid":uid,'sid':sid,'cid':cid,"count":count,"pfid":pfid,"wishlist_products":wishlist_products,"l1":l1,"countt":countt}
+    context={'mc':mc,'sc':sc,'mc2':mc2,'pid':pid,"uid":uid,'sid':sid,'cid':cid,"count":count,"pfid":pfid,"wishlist_products":wishlist_products,"l1":l1,"countt":countt,"show_page":show_page}
     return render(request,"shop.html",context)
+
+
+
+#========================================================
+
+
+def pagi(request):
+    data_list = range(1, 101)  # A list of 100 items
+    paginator1 = Paginator(data_list, 3)  # Show 10 items per page
+    
+    # Get the current page number from the query parameters
+    page_number = request.GET.get('page', 1)
+    page_number = int(page_number)  # Convert to integer
+    
+    # Get the elided page range for the current page
+    elided_page_range = paginator1.get_elided_page_range(number=page_number, on_each_side=2, on_ends=2)
+    
+    context = {
+        'elided_page_range': elided_page_range,
+        'current_page': page_number,  # Pass current page number to context
+        'paginator': paginator1,
+        'page_obj': paginator1.page(page_number),
+    }
+    return render(request, 'pagi.html', context)
+
 
 
 """================================================"""
@@ -418,6 +446,8 @@ def search(request):
 
 """================================================"""
 """----------Product Details--------"""
+import math
+
 def detail1(request,id):
     uid=User.objects.get(email=request.session['email'])
     pid=product.objects.get(id=id)
@@ -427,7 +457,32 @@ def detail1(request,id):
     countt=Add_to_whishlist.objects.filter(user_id=uid).count()
     sid=size.objects.all()
     cid=color.objects.all()
-    con={'pid':pid,"count":count,"rate_id":rate_id,"countt":countt,"r_count":r_count,"sid":sid,"cid":cid}
+    # l1=[]
+    # for i in rate_id:
+    #     l1.append(i.rating) 
+    # print(l1)
+    # a=sum(l1)/rate_id.count()   #start count and sum:- total stars/total reviews
+    # print(a)
+    # a1=math.ceil(a)     #  for half star
+    # print(a1)
+    l1 = []
+    for i in rate_id:
+        l1.append(i.rating)
+
+    print(l1)
+
+    if rate_id.count() > 0:
+        a = sum(l1)/rate_id.count()#start count and sum: total stars/total reviews
+        print(a)
+        a1 = math.ceil(a)  # for half star
+        print(a1)
+    else:
+        a = 0
+        a1 = 0
+        print("No ratings available")
+        
+    
+    con={'pid':pid,"count":count,"rate_id":rate_id,"countt":countt,"r_count":r_count,"sid":sid,"cid":cid,"a":a,"a1":a1}
     return render(request,"detail.html",con)
 
 # --------------------
@@ -437,7 +492,7 @@ def single_add_to_cart(request,id):
     if 'email' in request.session:
         if request.POST:
             qty=request.POST['qty']
-            price(qty,type(qty))
+            print(qty,type(qty))
             uid=User.objects.get(email=request.session['email'])
             pid=product.objects.get(id=id)
             pcid=Add_to_cart.objects.filter(product_id=pid,user_id=uid).first()
@@ -516,11 +571,11 @@ def cart(request):
             l1.append(a)
             sub_total=sum(l1)
 
-            con={"user_id":uid,"product_id":pid,
-                 "cid":cid,"total":total,"sub_total":sub_total,"charge":charge,"count":count,"countt":countt,"discount":discount}
-            return render(request,"cart.html",con)
-        else:
-            return render(request,"cart.html")
+        con={"user_id":uid,"product_id":pid,
+                "cid":cid,"total":total,"sub_total":sub_total,"charge":charge,"count":count,"countt":countt,"discount":discount}
+        return render(request,"cart.html",con)
+    else:
+        return render(request,"cart.html")
                 
         
             
@@ -784,23 +839,28 @@ def order(request):
 
         Address.objects.create(first_name=first_name,last_name=last_name,email=email,
                                        phone=phone,address=address,country=country,
+    
                                        city=city,state=state,zip_code=zip_code)
-
+    total_price=1    
+    for i in pro:
+        print(i.name)
+        
+        total_price = sum(product.price * product.quantity for product in pro) #100
+    client = razorpay.Client(auth=('rzp_test_uqhoYnBzHjbvGF','jEhBs6Qp9hMeGfq5FyU45cVi'))
+    response = client.order.create({'amount': total_price * 100, 'currency': 'INR', 'payment_capture': 1})
+    print(response,"********")
 
     for i in pro:
         print(i.name)
-        total_price=0
-        total_price = sum(product.price * product.quantity for product in pro) #100 here means 1 dollar,1 rupree if currency INR
-        client = razorpay.Client(auth=('rzp_test_uqhoYnBzHjbvGF','jEhBs6Qp9hMeGfq5FyU45cVi'))
-        response = client.order.create({'amount': total_price * 100, 'currency': 'INR', 'payment_capture': 1})
-        print(response,"********")
+
         Order.objects.create(order_id=response['id'],user_id=uid,
                              image=i.image,
                              name=i.name,
                              price=i.price,
                              quantity=i.quantity,
                              total=i.price*i.quantity,
-                             total_price=total_price)
+                             total_price=total_price,
+                             )
 
         i.delete()
 
@@ -820,6 +880,33 @@ def order_delete(request,id):
     return redirect("order")
 
 
+# def order_id(request):
+#     uid=User.objects.get(email=request.session['email'])
+#     otid=Order.objects.filter(order_id=uid)
+#     if request.method == 'POST':
+#         order_id = request.POST.get('order_id')
+#         uid = User.objects.get(email=request.session['email'])
+#     print(order_id)
+#     for i in otid:
+#         Order.objects.create(order_id=order_id,user_id=uid)
+#     con={"otid":otid}
+#     return render(request,"order_id.html",con)
+
+
+def order_track(request):
+    
+    if request.method == 'POST':
+        order_id = request.POST['order_id']
+        uid = User.objects.get(email=request.session['email'])
+        
+        otid = Order.objects.filter(order_id=order_id, user_id=uid)
+        print(otid)
+        
+        
+        context = {"otid": otid,"chh":chh}
+        return render(request, "order_track.html", context)
+    else:
+        return render(request, "order_id.html")
 
 
 """=============================================="""
@@ -956,7 +1043,7 @@ def invoice(request):
         print(i.first_name,i.last_name)
     oid=Order.objects.order_by("-id")[:1]
     a=None
-    datetime=None
+    datetime=None   
     for i in oid:
         a=i.order_id
         datetime=i.datetime
@@ -985,7 +1072,5 @@ def invoice(request):
         "datetime":datetime,
         "total_price":total_price,}
     return render(request, 'invoice.html',contaxt)
-
-
 
 

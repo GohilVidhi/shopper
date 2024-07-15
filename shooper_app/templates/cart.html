@@ -36,6 +36,7 @@
                     <thead class="bg-secondary text-dark">
                         <tr>
                             <th>Products</th>
+                            <th>name</th>
                             <th>Price</th>
                             <th>Size</th>
                             <th>Quantity</th>
@@ -48,7 +49,11 @@
                     <tbody class="align-middle">
                         {% for i in cid %}
                         <tr>
-                            <td class="align-middle"> <img src="{{i.image.url}}" alt="" style="width: 50px;height:50px">{{i.name}}</td>
+                            <td class="align-middle">
+                                <img src="{{ i.image.url }}" alt="{{ i.name }}" style="width: 50px; height: 50px; border-radius: 50%;">
+                             
+                            </td>
+                            <td class="align-middle">{{i.name}}</td>
                             <td class="align-middle">{{i.price}}</td>
                             <td class="align-middle">{{i.size}}</td>
                             <td class="align-middle">

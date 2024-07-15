@@ -17,4 +17,5 @@ admin.site.register(Rating)
 
 admin.site.register(coupon_code)
 
+admin.site.register(Demo)
 
