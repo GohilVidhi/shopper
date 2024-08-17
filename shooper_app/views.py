@@ -10,7 +10,7 @@ import razorpay
 from django.utils import timezone
 # Create your views here.
 
-
+print("ok")
 
 """================================================"""
 """----------Home page--------"""
