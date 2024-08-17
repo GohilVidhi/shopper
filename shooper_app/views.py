@@ -11,6 +11,7 @@ from django.utils import timezone
 # Create your views here.
 
 print("ok")
+print("ok")
 
 """================================================"""
 """----------Home page--------"""
